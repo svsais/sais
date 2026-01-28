@@ -11,8 +11,15 @@ echo "Initializing installer..."
 sdrive_count=0
 sdrive_ids=()
 sdrive_names=()
+user_count=0
+user_names=()
+user_sudo=()
+user_ssh=()
+q_sdrive_symlink="n"
 q_ssh="n"
 q_reflector="n"
+q_zsh="n"
+q_packages="base linux linux-firmware efibootmgr grub networkmanager sudo"
 #colours
 noformat="\033[0m"
 font="\033[38;5;"
@@ -67,12 +74,12 @@ if [ swap_size = "" ]; then
 	swap_size="32G"
 fi
 #sec
-qyn "Add secondary drive" "n"
+qyn "Would you like to add a secondary drive" "n"
 read ltmp
 while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	((sdrive_count=sdrive_count+1))
 	lsblk
-	drive "Enter secondary drive"
+	qdrive "Enter secondary drive"
 	read qtmp
 	sdrive_ids+=("$qtmp")
 	qstr "Name secondary drive (default=drive$sdrive_count)"
@@ -82,53 +89,76 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	fi
 	sdrive_names+=("$qtmp")
 	slog "Drive added."
-	qyn "Add another secondary drive" "n"
+	qyn "Would you like to add another secondary drive" "n"
 	read ltmp
 done
-qyn "Shred drives (replaces all data with random bits)" "n"
+qyn "Would you like to shred the drives (replaces all data with random bits)" "n"
 read sh_drives
 if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
-slog "Drives marked for shredding."
+	slog "Drives marked for shredding."
 fi
-# Package Selection UI
-pkgui_packages=("yay" "git" "base-devel" "wget" "vim" "nano")
-pkgui_selected=("" "" "" "" "" "")
-pkgui_line_width=$(tput cols)
-pkgui_line_width=$((pkgui_line_width/16))
-pkguirender () {
-	qrow=1
-	for i in ${!pkgui_packages[@]}; do
-		qtmp=${pkgui_packages[$i]}
-		if [ $((i+1)) -gt $((pkgui_line_width*qrow)) ]; then
-			printf '\n'
-			((qrow=qrow+1))
-		fi
-		if [ $i -eq $1 ]; then
-			if [[ ${pkgui_selected[$i]} = "" ]]; then
-				printf "$font$aqua$bgr$gray%14s$noformat  " $qtmp
-			else
-				printf "$font$aqua$bgr$teal%14s$noformat  " $qtmp
-			fi
-		else
-			if [[ ${pkgui_selected[$i]} = "" ]]; then
-				printf "$font$white%14s$noformat  " $qtmp
-			else
-				printf "$font$white$bgr$purple%14s$noformat  " $qtmp
-			fi
-		fi
-	done
-	qtmp="Install"
-	if [ ${#array[@]} -eq $1 ]; then
-		printf '\n'
-		printf "$font$yellow$bgr$dred%-14s$noformat  " $qtmp
-	else
-		printf '\n'
-		printf "$font$yellow$bgr$dred%-14s$noformat  " $qtmp
-		printf '\n'
-	fi
-}
-
-
+#users
+qyn "Would you like to create a user" "n"
+read ltmp
+while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
+	((user_count=user_count+1))
+	lsblk
+	qstr "Enter username"
+	read qtmp
+	user_names+=("$qtmp")
+	qyn "Make user a sudoer" "n"
+	read qtmp
+	user_sudo+=("$qtmp")
+	qyn "Allow ssh access to user" "n"
+	read qtmp
+	user_ssh+=("$qtmp")
+	qyn "Would you like to create another user" "n"
+	read ltmp
+done
+#ssh
+qyn "Would you like to switch default shell to zsh (bash will remain installed, users made with this installer will use zsh)" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" zsh"
+	slog "zsh marked for install."
+	q_zsh="y"
+	slog "zsh marked for configuration."
+fi
+qyn "Would you like to add ssh server capabilities" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" openssh"
+	slog "openssh marked for install."
+	q_ssh="y"
+	slog "ssh marked for configuration."
+fi
+qyn "Would you like to enable automatic mirror refreshing on boot using reflector" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" reflector"
+	slog "reflector marked for install."
+	q_reflector="y"
+	slog "reflector marked for configuration."
+fi
+#Packages Query
+qyn "Would you like to install vim" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" vim"
+	slog "vim marked for install."
+fi
+qyn "Would you like to install git" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" git"
+	slog "git marked for install."
+fi
+qyn "Would you like to install base tools for building packages from source" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" base-devel"
+	slog "base-devel marked for install."
+fi
 #Install
 slog "Starting install."
 #Drives and Partitions
