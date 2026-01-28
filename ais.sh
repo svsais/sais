@@ -21,12 +21,16 @@ pink="13m"
 green="2m"
 lime="10m"
 navy="4m"
+blue="12m"
 teal="6m"
 aqua="14m"
 white="15m"
 red="9m"
 dred="1m"
 olive="3m"
+gray="8m"
+purple="5m"
+yellow="11m"
 #utility functions
 slog () {
 	echo "$font$olive[SAIS](Logger) -> $1$noformat"
@@ -66,7 +70,7 @@ fi
 qyn "Add secondary drive" "n"
 read ltmp
 while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
-	sdrive_count+=1
+	((sdrive_count=sdrive_count+1))
 	lsblk
 	drive "Enter secondary drive"
 	read qtmp
@@ -86,6 +90,45 @@ read sh_drives
 if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 slog "Drives marked for shredding."
 fi
+# Package Selection UI
+pkgui_packages=("yay" "git" "base-devel" "wget" "vim" "nano")
+pkgui_selected=("" "" "" "" "" "")
+pkgui_line_width=$(tput cols)
+pkgui_line_width=$((pkgui_line_width/16))
+pkguirender () {
+	qrow=1
+	for i in ${!pkgui_packages[@]}; do
+		qtmp=${pkgui_packages[$i]}
+		if [ $((i+1)) -gt $((pkgui_line_width*qrow)) ]; then
+			printf '\n'
+			((qrow=qrow+1))
+		fi
+		if [ $i -eq $1 ]; then
+			if [[ ${pkgui_selected[$i]} = "" ]]; then
+				printf "$font$aqua$bgr$gray%14s$noformat  " $qtmp
+			else
+				printf "$font$aqua$bgr$teal%14s$noformat  " $qtmp
+			fi
+		else
+			if [[ ${pkgui_selected[$i]} = "" ]]; then
+				printf "$font$white%14s$noformat  " $qtmp
+			else
+				printf "$font$white$bgr$purple%14s$noformat  " $qtmp
+			fi
+		fi
+	done
+	qtmp="Install"
+	if [ ${#array[@]} -eq $1 ]; then
+		printf '\n'
+		printf "$font$yellow$bgr$dred%-14s$noformat  " $qtmp
+	else
+		printf '\n'
+		printf "$font$yellow$bgr$dred%-14s$noformat  " $qtmp
+		printf '\n'
+	fi
+}
+
+
 #Install
 slog "Starting install."
 #Drives and Partitions
