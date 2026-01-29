@@ -15,6 +15,7 @@ user_count=0
 user_names=()
 user_sudo=()
 user_ssh=()
+user_passwords=()
 q_sdrive_symlink="n"
 q_ssh="n"
 q_reflector="n"
@@ -40,7 +41,7 @@ purple="5m"
 yellow="11m"
 #utility functions
 slog () {
-	echo "$font$olive[SAIS](Logger) -> $1$noformat"
+	printf "$font$olive[SAIS](Logger) -> $1$noformat\n"
 }
 sbegin () {
 	slog "$font$teal$1...$noformat"
@@ -97,12 +98,20 @@ read sh_drives
 if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 	slog "Drives marked for shredding."
 fi
+#ssh
+qyn "Would you like to add ssh server capabilities" "n"
+read qtmp
+if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+	q_packages+=" openssh"
+	slog "openssh marked for install."
+	q_ssh="y"
+	slog "ssh marked for configuration."
+fi
 #users
 qyn "Would you like to create a user" "n"
 read ltmp
 while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	((user_count=user_count+1))
-	lsblk
 	qstr "Enter username"
 	read qtmp
 	user_names+=("$qtmp")
@@ -123,14 +132,6 @@ if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
 	slog "zsh marked for install."
 	q_zsh="y"
 	slog "zsh marked for configuration."
-fi
-qyn "Would you like to add ssh server capabilities" "n"
-read qtmp
-if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
-	q_packages+=" openssh"
-	slog "openssh marked for install."
-	q_ssh="y"
-	slog "ssh marked for configuration."
 fi
 qyn "Would you like to enable automatic mirror refreshing on boot using reflector" "n"
 read qtmp
@@ -194,7 +195,7 @@ fi
 sbegin "Formatting primary drive partitions"
 mkfs.fat -F 32 /dev/${primary_drive}1
 mkswap /dev/${primary_drive}2
-mkfs.ext4 /dev/${primary_drive}3
+mkfs.ext4 -FF /dev/${primary_drive}3
 sdone
 if [sdrive_count -gt 0]; then
 	sbegin "Formatting secondary drive partitions"
