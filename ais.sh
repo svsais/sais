@@ -132,7 +132,7 @@ fi
 #users
 qyn "Would you like to create a user" "n"
 read ltmp
-while [[ $ltmp = "y" || $ltmp = "Y" ]]; then
+while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	((user_count=user_count+1))
 	qstr "Enter username"
 	read qtmp
@@ -142,7 +142,7 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; then
 	qyn "Make user a sudoer" "n"
 	read qtmp
 	user_sudo+=("$qtmp")
-	if [ $q_ssh = "y" ]
+	if [ $q_ssh = "y" ]; then
 		qyn "Allow ssh access to user" "n"
 		read qtmp
 		user_ssh+=("$qtmp")
