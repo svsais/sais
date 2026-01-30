@@ -1,6 +1,6 @@
-# Saki's Arch Installer v2.1.1 - Archiso Portion
+# Saki's Arch Installer v2.1.2 - Archiso Portion
 echo "---------------------------------------"
-echo "Welcome to Saki's Arch Installer v2.1.1"
+echo "Welcome to Saki's Arch Installer v2.1.2"
 echo "---------------------------------------"
 printf 'Begin installation? (Y/n): '
 read qtmp
@@ -259,7 +259,7 @@ swapon /dev/${primary_drive}2
 sdone
 #Package Installation
 sbegin "Refreshing mirrors"
-reflector_country = `curl https://ipapi.co/country`
+reflector_country=`curl https://ipapi.co/country`
 reflector -p https -c $reflector_country -l 5 --sort rate --save /etc/pacman.d/mirrorlist
 sdone
 sbegin "Installing essential packages"
