@@ -38,7 +38,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 snext "Enabling network manager service"
 systemctl enable NetworkManager.service
 snext "Setting root password"
-echo "$q_root_password" | passwd -s root
+echo "$q_root_password" | passwd -s
 if [ $q_zsh = "y" ]; then
 	snext "Setting root shell to zsh"
 	chsh -s /bin/zsh
@@ -99,7 +99,7 @@ if [ $user_count -gt 0 ]; then
 		fi
 	done
 fi
-snext "Removing self"
-rm -rf /chr.sh
+#snext "Removing self"
+#rm -rf /chr.sh
 sdone
 printf "$font$green$1Arch installation complete. You may now reboot!$noformat\n"
