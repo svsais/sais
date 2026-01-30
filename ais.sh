@@ -208,11 +208,8 @@ if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 		sdone
 	fi
 fi
-sbegin "Wiping primary drive"
-sfdisk -w always /dev/$primary_drive
-sdone
 sbegin "Partitioning primary drive"
-echo -e "label: gpt\n size=1G, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B\n size=$swap_size, type=S\n size=+, type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709\n" | sfdisk -f /dev/$primary_drive
+echo -e "label: gpt\n size=1G, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B\n size=$swap_size, type=S\n size=+, type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709\n" | sfdisk -fw always  /dev/$primary_drive
 sdone
 if [sdrive_count -gt 0]; then
 	sbegin "Partitioning secondary drives"
