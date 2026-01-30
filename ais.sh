@@ -263,7 +263,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 sdone
 #Move Installer to Arch-Chroot
 sbegin "Fetching secondary install script"
-curl "https://sakivali.github.io/Arch-Install-Guide/chroot.sh" > /mnt/tmp.sh
+# TODO add variable transfer to second script
+curl "https://svsais.github.io/sais/chr.sh" > /mnt/tmp.sh
 sdone
 sbegin "Making secondary script runnable"
 chmod a+x /mnt/tmp.sh
