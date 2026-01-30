@@ -62,7 +62,7 @@ if [ $q_reflector = "y" ]; then
 	systemctl enable reflector.service
 fi
 #User Setup
-if [user_count -gt 0]; then
+if [ user_count -gt 0 ]; then
 	for i in ${!user_names[@]}; do
 		snext "Setting up user: ${user_names[$i]}"
 		slog "Creating user."
