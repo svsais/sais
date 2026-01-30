@@ -51,7 +51,6 @@ systemctl enable NetworkManager.service
 snext "Setting root password"
 echo $q_root_password | passwd -s root
 sdone
-#TODO reflector and ssh
 if [ $q_ssh = "y" ]; then
 	sbegin "Configuring ssh server"
 	groupadd ssh
@@ -60,6 +59,14 @@ if [ $q_ssh = "y" ]; then
 	ssh-keygen -A
 	snext "starting open ssh service..."
 	systemctl enable sshd.service
+	sdone
+fi
+if [ $q_reflector = "y" ]; then
+	sbegin "Configuring reflector"
+	tmp = `curl https://ipapi.co/country`
+	echo "-p https -c $tmp -l 5 --sort rate --save /etc/pacman.d/mirrorlist" > /etc/xdg/reflector/reflector.conf && break
+	snext "enabling reflector boot service"
+	systemctl enable reflector.service
 	sdone
 fi
 slog "Root install complete, moving on to user config"
