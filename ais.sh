@@ -268,15 +268,11 @@ vtrans () {
 	echo $1 >> /mnt/chr.sh
 }
 vtrans "sdrive_count=$sdrive_count"
-tmp="sdrive_ids=("
+vtrans "sdrive_ids=("
 for d in ${sdrive_ids[@]}; do
-	tmp+='"'
-	tmp+=$d
-	tmp+='" '
+	echo -n "\"$d\" " >> /mnt/chr.sh
 done
-tmp+=")"
-slog $tmp
-vtrans $tmp
+echo -n ")" >> /mnt/chr.sh
 tmp="sdrive_names=("
 for d in ${sdrive_names[@]}; do
 	tmp="$tmp\"$d\" "
