@@ -56,7 +56,7 @@ fi
 if [ $q_reflector = "y" ]; then
 	snext "Setting up reflector"
 	slog "Configuring reflector."
-	tmp = `curl https://ipapi.co/country`
+	tmp=`curl https://ipapi.co/country`
 	echo "-p https -c $tmp -l 5 --sort rate --save /etc/pacman.d/mirrorlist" > /etc/xdg/reflector/reflector.conf && break
 	slog "Enabling reflector boot service."
 	systemctl enable reflector.service
@@ -88,7 +88,7 @@ if [ $user_count -gt 0 ]; then
 			for j in ${!sdrive_ids[@]}; do
 				mkdir /drives/${sdrive_names[$j]}/${user_names[$i]}
 				if [ $q_sdrive_symlink = "y" ]; then
-					ls -s /drives/${sdrive_names[$j]}/${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
+					ln -s /drives/${sdrive_names[$j]}/${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
 					chown ${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
 				fi
 				chown ${user_names[$i]} /drives/${sdrive_names[$j]}/${user_names[$i]}
