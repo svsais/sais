@@ -1,7 +1,7 @@
 # Saki's Arch Installer v2.1.1 - Archiso Portion
-echo "-------------------------------------"
-echo "Welcome to Saki's Arch Installer v2.0"
-echo "-------------------------------------"
+echo "---------------------------------------"
+echo "Welcome to Saki's Arch Installer v2.1.1"
+echo "---------------------------------------"
 printf 'Begin installation? (Y/n): '
 read qtmp
 if [[ $qtmp = "n" || $qtmp = "N" ]]; then
