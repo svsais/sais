@@ -99,7 +99,7 @@ if [ $user_count -gt 0 ]; then
 		fi
 	done
 fi
-#snext "Removing self"
-#rm -rf /chr.sh
+snext "Removing self"
+rm -rf /chr.sh
 sdone
 printf "$font$green$1Arch installation complete. You may now reboot!$noformat\n"
