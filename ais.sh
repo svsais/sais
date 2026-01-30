@@ -68,15 +68,16 @@ qstr () {
 qpasswd () {
 	printf "$font${green}Enter password for $1 (Your input will be hidden for security):$noformat "
 	read -sr qtmp
-	printf "$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
+	printf "\n$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
 	read -sr tmp
 	while [ $qtmp != $tmp ]; do
-		printf "$font${green}Error passwords dont match!\nEnter password for $1 (Your input will be hidden for security):$noformat "
+		printf "\n$font${green}Error passwords dont match!\nEnter password for $1 (Your input will be hidden for security):$noformat "
 		read -sr qtmp
-		printf "$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
+		printf "\n$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
 		read -sr tmp
 	done
 	tmp=""
+	printf "\n"
 }
 sdone
 clear
@@ -131,7 +132,7 @@ fi
 #users
 qyn "Would you like to create a user" "n"
 read ltmp
-while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
+while [[ $ltmp = "y" || $ltmp = "Y" ]]; then
 	((user_count=user_count+1))
 	qstr "Enter username"
 	read qtmp
