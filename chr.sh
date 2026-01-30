@@ -27,19 +27,6 @@ sbegin () {
 sdone () {
 	slog "$font${teal}done.$noformat"
 }
-qyn () {
-	if [ $2 = "y" ]; then
-		printf "$font$green$1? (Y/n):$noformat "
-	else
-		printf "$font$green$1? (y/N):$noformat "
-	fi
-}
-qdrive () {
-	printf "$font$green$1:$noformat /dev/"
-}
-qstr () {
-	printf "$font$green$1:$noformat "
-}
 slog "Secondary script running, and utility functions setup."
 #initial setup stuffs
 sbegin "Setting up timezone"
@@ -47,3 +34,24 @@ tmp=`curl https://ipapi.co/timezone`
 timedatectl set-timezone $tmp
 hwclock --systohc
 sdone
+sbegin "Generating locales"
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "$q_hostname" > /etc/hostname
+sdone
+sbegin "Installing grub"
+grub-install --target=x86_64-efi --efi-directory=/boot --removable
+grub-mkconfig -o /boot/grub/grub.cfg
+sdone
+sbegin "Setting wheel group as sudoers"
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+sdone
+sbegin "Enabling network manager service"
+systemctl enable NetworkManager.service
+sdone
+sbegin "Setting root password"
+echo $q_root_password | passwd -s root
+sdone
+#TODO reflector and ssh
+slog "Root install complete, moving on to user config"
+#TODO user setup
