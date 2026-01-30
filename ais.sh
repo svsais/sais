@@ -331,4 +331,9 @@ rm -rf /ais.sh
 sdone
 slog "Launching secondary script in arch-chroot."
 arch-chroot /mnt /chr.sh
-slog "TODO Reboot support"
+qyn "Arch install complete! Reboot now" "y"
+read qtmp
+if [[ $qtmp = "n" || $qtmp = "N" ]]; then
+	exit
+fi
+reboot
