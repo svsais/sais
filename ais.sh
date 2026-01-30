@@ -293,6 +293,7 @@ for d in ${user_sudo[@]}; do
 	tmp+="\"$d\" "
 done
 tmp+="$qtmp"
+slog $tmp
 vtrans $tmp
 tmp="user_ssh=("
 for d in ${user_ssh[@]}; do
