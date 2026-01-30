@@ -23,7 +23,6 @@ q_sdrive_symlink="n"
 q_ssh="n"
 q_reflector="n"
 q_zsh="n"
-q_ssh_user="n"
 q_packages="base linux linux-firmware efibootmgr grub networkmanager sudo"
 #colours
 noformat="\033[0m"
@@ -128,12 +127,6 @@ if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
 	slog "openssh marked for install."
 	q_ssh="y"
 	slog "ssh marked for configuration."
-	qyn "Would you like to add a dummy ssh system user, and mark it for autologin (good for servers)" "n"
-	read qtmp
-	if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
-		q_ssh_user="y"
-		slog "ssh dummy user marked for creation and autologin."
-	fi
 fi
 #users
 qyn "Would you like to create a user" "n"
