@@ -83,6 +83,8 @@ if [user_count -gt 0]; then
 		fi
 	done
 fi
+snext "Removing self"
+rm -rf /chr.sh
 sdone
 printf "$font$green$1Arch installation complete. Reboot pc? (Y/n):$noformat "
 read qtmp
