@@ -86,7 +86,7 @@ slog "Configuring install."
 lsblk
 qdrive "Enter primary drive"
 read primary_drive
-qstr "Enter swap size bytes (default=32G)"
+qstr "Enter swap size bytes (eg 32G)"
 read swap_size
 if [ swap_size = "" ]; then
 	swap_size="32G"
@@ -212,7 +212,7 @@ sbegin "Wiping primary drive"
 sfdisk -w /dev/$primary_drive
 sdone
 sbegin "Partitioning primary drive"
-echo -e "label: gpt\n size=1G, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B\n size=$swap_size, type=S\n size=+, type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709\n" | sfdisk /dev/$primary_drive
+echo -e "label: gpt\n size=1G, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B\n size=$swap_size, type=S\n size=+, type=4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709\n" | sfdisk -f /dev/$primary_drive
 sdone
 if [sdrive_count -gt 0]; then
 	sbegin "Partitioning secondary drives"
