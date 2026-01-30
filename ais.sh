@@ -215,7 +215,7 @@ if [ $sdrive_count -gt 0 ]; then
 	sbegin "Partitioning secondary drives"
 	for d in ${sdrive_ids[@]}; do
 		slog "Partitioning drive /dev/$d"
-		echo -e "label: gpt\n size+, type=F\n" | sfdisk -f /dev/$d
+		echo -e "label: gpt\n size=+, type=F\n" | sfdisk -f /dev/$d
 	done
 	sdone
 fi
