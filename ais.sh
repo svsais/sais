@@ -86,9 +86,9 @@ slog "Configuring install."
 lsblk
 qdrive "Enter primary drive"
 read primary_drive
-qstr "Enter swap size bytes (eg 32G)"
+qstr "Enter swap size bytes (default=32G)"
 read swap_size
-if [ swap_size = "" ]; then
+if [[ -z "${swap_size}" ]]; then
 	swap_size="32G"
 fi
 #sec
@@ -102,11 +102,11 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	sdrive_ids+=("$qtmp")
 	qstr "Name secondary drive (default=drive$sdrive_count)"
 	read qtmp
-	if [ qtmp = "" ]; then
+	if [[ -z "${qtmp}" ]]; then
 		qtmp="drive$sdrive_count"
 	fi
 	sdrive_names+=("$qtmp")
-	slog "Drive added."
+	slog "Drive \"$qtmp\" added."
 	qyn "Would you like to add another secondary drive" "n"
 	read ltmp
 done
@@ -151,7 +151,7 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	read ltmp
 done
 if [[ $sdrive_count -gt 0 && $user_count -gt 0 ]]; then
-	qyn "Would you like to symlink users secondary drive(s) folder to there home directory"
+	qyn "Would you like to symlink users secondary drive(s) folder to there home directory" "n"
 	read qtmp
 	if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
 		q_sdrive_symlink="y"
