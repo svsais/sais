@@ -116,7 +116,7 @@ if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 	slog "Drives marked for shredding."
 fi
 #hostname and root
-qstr "Enter hostname:"
+qstr "Enter hostname"
 read q_hostname
 qpasswd "root"
 q_root_password=$qtmp
