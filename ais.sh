@@ -1,3 +1,4 @@
+# Saki's Arch Installer v2.0 - Archiso Portion
 echo "-------------------------------------"
 echo "Welcome to Saki's Arch Installer v2.0"
 echo "-------------------------------------"
@@ -16,6 +17,8 @@ user_names=()
 user_sudo=()
 user_ssh=()
 user_passwords=()
+q_hostname=""
+q_root_password=""
 q_sdrive_symlink="n"
 q_ssh="n"
 q_reflector="n"
@@ -63,6 +66,19 @@ qdrive () {
 qstr () {
 	printf "$font$green$1:$noformat "
 }
+qpasswd () {
+	printf "$font${green}Enter password for $1 (Your input will be hidden for security):$noformat "
+	read -sr qtmp
+	printf "$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
+	read -sr tmp
+	while [ $qtmp != $tmp ]; do
+		printf "$font${green}Error passwords dont match!\nEnter password for $1 (Your input will be hidden for security):$noformat "
+		read -sr qtmp
+		printf "$font${green}Confirm password for $1 (Your input will be hidden for security):$noformat "
+		read -sr tmp
+	done
+	tmp=""
+}
 sdone
 clear
 #Query User for Install - Query first + Install later allows me to walk away while it installs
@@ -99,6 +115,11 @@ read sh_drives
 if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 	slog "Drives marked for shredding."
 fi
+#hostname and root
+qstr "Enter hostname:"
+read q_hostname
+qpasswd "root"
+q_root_password=$qtmp
 #ssh
 qyn "Would you like to add ssh server capabilities" "n"
 read qtmp
@@ -110,6 +131,7 @@ if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
 	qyn "Would you like to add a dummy ssh system user, and mark it for autologin (good for servers)" "n"
 	read qtmp
 	if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+		q_ssh_user="y"
 		slog "ssh dummy user marked for creation and autologin."
 	fi
 fi
@@ -121,6 +143,8 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	qstr "Enter username"
 	read qtmp
 	user_names+=("$qtmp")
+	qpasswd "user"
+	user_passwords+=("$qtmp")
 	qyn "Make user a sudoer" "n"
 	read qtmp
 	user_sudo+=("$qtmp")
@@ -167,10 +191,14 @@ if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
 	slog "base-devel marked for install."
 fi
 #Install
+qyn "Final confirmation. begin installation (Warning this will wipe seleced drives and install arch linux on them)" "y"
+read qtmp
+if [[ $qtmp = "n" || $qtmp = "N" ]]; then
+	exit
+fi
 slog "Starting install."
 #Drives and Partitions
 slog "Prepping drives."
-
 if [[ $sh_drives = "y" || $sh_drives = "Y" ]]; then
 	sbegin "Shredding primary drive"
 	shred -vn 1 /dev/$primary_drive
