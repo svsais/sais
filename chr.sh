@@ -86,9 +86,4 @@ fi
 snext "Removing self"
 rm -rf /chr.sh
 sdone
-printf "$font$green$1Arch installation complete. Reboot pc? (Y/n):$noformat "
-read qtmp
-if [[ $qtmp = "n" || $qtmp = "N" ]]; then
-	exit
-fi
-reboot
+printf "$font$green$1Arch installation complete. You may now reboot!$noformat\n"
