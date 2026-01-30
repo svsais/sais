@@ -38,7 +38,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 snext "Enabling network manager service"
 systemctl enable NetworkManager.service
 snext "Setting root password"
-echo $q_root_password | passwd -s root
+echo "$q_root_password" | passwd -s root
 if [ $q_zsh = "y" ]; then
 	snext "Setting root shell to zsh"
 	chsh -s /bin/zsh
@@ -68,7 +68,7 @@ if [ $user_count -gt 0 ]; then
 		slog "Creating user."
 		useradd -m ${user_names[$i]}
 		slog "Setting user password."
-		echo ${user_passwords[$i]} | passwd -s ${user_names[$i]}
+		echo "${user_passwords[$i]}" | passwd -s ${user_names[$i]}
 		if [[ ${user_sudo[$i]} = "y" || ${user_sudo[$i]} = "Y" ]]; then
 			slog "Adding user to wheel group."
 			gpasswd -a ${user_names[$i]} wheel
@@ -82,18 +82,18 @@ if [ $user_count -gt 0 ]; then
 			usermod -s /bin/zsh ${user_names[$i]}
 		fi
 		if [ $sdrive_count -gt 0 ]; then
-			if [ $q_sdrive_symlink = "y" ]; do
+			if [ $q_sdrive_symlink = "y" ]; then
 				mkdir -p /home/${user_names[$i]}/drives
 			fi
 			for j in ${!sdrive_ids[@]}; do
 				mkdir /drives/${sdrive_names[$j]}/${user_names[$i]}
-				if [ $q_sdrive_symlink = "y" ]; do
+				if [ $q_sdrive_symlink = "y" ]; then
 					ls -s /drives/${sdrive_names[$j]}/${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
 					chown ${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
 				fi
 				chown ${user_names[$i]} /drives/${sdrive_names[$j]}/${user_names[$i]}
 			done
-			if [ $q_sdrive_symlink = "y" ]; do
+			if [ $q_sdrive_symlink = "y" ]; then
 				chown ${user_names[$i]} /home/${user_names[$i]}/drives
 			fi
 		fi
