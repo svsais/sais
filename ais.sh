@@ -291,7 +291,7 @@ for d in ${sdrive_names[@]}; do
 	vtrans "\"$d\" "
 done
 vnext ")"
-vtrans "user_count=\"$user_count\""
+vnext "user_count=\"$user_count\""
 vtrans "user_names=("
 for d in ${user_names[@]}; do
 	vtrans "\"$d\" "
