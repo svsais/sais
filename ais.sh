@@ -1,4 +1,4 @@
-# Saki's Arch Installer v2.1.0 - Archiso Portion
+# Saki's Arch Installer v2.1.1 - Archiso Portion
 echo "-------------------------------------"
 echo "Welcome to Saki's Arch Installer v2.0"
 echo "-------------------------------------"
