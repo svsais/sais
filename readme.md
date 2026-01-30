@@ -1,9 +1,9 @@
 # Saki's Arch Install Script
-#### Note this installer is for installing single os arch on UEFI 64 bit systems, running an x86-64 architecture, using grub as a bootloader
+#### Note this installer is for UEFI 64 bit systems, running an x86-64 architecture.
 ---
 
 
-# Guide
+# Install Guide
 
 >List internet devices (Skip if using ethernet)
 ```
