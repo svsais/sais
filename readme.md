@@ -25,3 +25,8 @@
 ```
 > ping google.com
 ```
+
+>Download and run installer
+```
+> curl https://svsais.github.io/sais/ais.sh > /ais.sh && chmod +x /ais.sh && /ais.sh
+```
