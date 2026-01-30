@@ -272,38 +272,38 @@ tmp="sdrive_ids=("
 for d in ${sdrive_ids[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 tmp="sdrive_names=("
 for d in ${sdrive_names[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 vtrans "user_count=\"$user_count\""
 tmp="user_names=("
 for d in ${user_names[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 tmp="user_sudo=("
 for d in ${user_sudo[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 tmp="user_ssh=("
 for d in ${user_ssh[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 tmp="user_passwords=("
 for d in ${user_passwords[@]}; do
 	tmp+="\"$d\" "
 done
-tmp+=')'
+tmp+=");"
 vtrans $tmp
 vtrans "q_hostname=\"$q_hostname\""
 vtrans "q_root_password=\"$q_root_password\""
