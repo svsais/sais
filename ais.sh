@@ -279,7 +279,7 @@ slog $tmp
 vtrans $tmp
 tmp="sdrive_names=("
 for d in ${sdrive_names[@]}; do
-	tmp+="\\\"$d\\\" "
+	tmp="$tmp\"$d\" "
 done
 tmp+=")"
 vtrans $tmp
