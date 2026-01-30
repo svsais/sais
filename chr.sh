@@ -38,7 +38,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 snext "Enabling network manager service"
 systemctl enable NetworkManager.service
 snext "Setting root password"
-echo "$q_root_password" | passwd -s
+echo "root:$q_root_password" | chpasswd
 if [ $q_zsh = "y" ]; then
 	snext "Setting root shell to zsh"
 	chsh -s /bin/zsh
@@ -68,7 +68,7 @@ if [ $user_count -gt 0 ]; then
 		slog "Creating user."
 		useradd -m ${user_names[$i]}
 		slog "Setting user password."
-		echo "${user_passwords[$i]}" | passwd -s ${user_names[$i]}
+		echo "${user_names[$i]}:${user_passwords[$i]}" | chpasswd
 		if [[ ${user_sudo[$i]} = "y" || ${user_sudo[$i]} = "Y" ]]; then
 			slog "Adding user to wheel group."
 			gpasswd -a ${user_names[$i]} wheel
