@@ -1,4 +1,4 @@
-# Saki's Arch Installer v2.0 - Chroot Portion
+# Saki's Arch Installer v2.1.0 - Chroot Portion
 #colours
 noformat="\033[0m"
 font="\033[38;5;"
@@ -82,16 +82,24 @@ if [ $user_count -gt 0 ]; then
 			usermod -s /bin/zsh ${user_names[$i]}
 		fi
 		if [ $sdrive_count -gt 0 ]; then
-			#mkdir -p /home/${user_names[$i]}/drives
+			if [ $q_sdrive_symlink = "y" ]; do
+				mkdir -p /home/${user_names[$i]}/drives
+			fi
 			for j in ${!sdrive_ids[@]}; do
 				mkdir /drives/${sdrive_names[$j]}/${user_names[$i]}
+				if [ $q_sdrive_symlink = "y" ]; do
+					ls -s /drives/${sdrive_names[$j]}/${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
+					chown ${user_names[$i]} /home/${user_names[$i]}/drives/${sdrive_names[$j]}
+				fi
 				chown ${user_names[$i]} /drives/${sdrive_names[$j]}/${user_names[$i]}
-				#TODO secondary drive symlink support
 			done
+			if [ $q_sdrive_symlink = "y" ]; do
+				chown ${user_names[$i]} /home/${user_names[$i]}/drives
+			fi
 		fi
 	done
 fi
 snext "Removing self"
-#rm -rf /chr.sh
+rm -rf /chr.sh
 sdone
 printf "$font$green$1Arch installation complete. You may now reboot!$noformat\n"

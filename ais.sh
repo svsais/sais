@@ -1,4 +1,4 @@
-# Saki's Arch Installer v2.0 - Archiso Portion
+# Saki's Arch Installer v2.1.0 - Archiso Portion
 echo "-------------------------------------"
 echo "Welcome to Saki's Arch Installer v2.0"
 echo "-------------------------------------"
@@ -150,6 +150,14 @@ while [[ $ltmp = "y" || $ltmp = "Y" ]]; do
 	qyn "Would you like to create another user" "n"
 	read ltmp
 done
+if [[ $sdrive_count -gt 0 && $user_count -gt 0 ]]; then
+	qyn "Would you like to symlink users secondary drive(s) folder to there home directory"
+	read qtmp
+	if [[ $qtmp = "y" || $qtmp = "Y" ]]; then
+		q_sdrive_symlink="y"
+		slog "Symlink(s) marked for creation."
+	fi
+fi
 #ssh
 qyn "Would you like to switch default shell to zsh (bash will remain installed, users made with this installer will use zsh)" "n"
 read qtmp
