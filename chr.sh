@@ -50,24 +50,54 @@ snext "Enabling network manager service"
 systemctl enable NetworkManager.service
 snext "Setting root password"
 echo $q_root_password | passwd -s root
-sdone
+if [ $q_zsh = "y" ]; then
+	snext "Setting root shell to zsh"
+	chsh -s /bin/zsh
+fi
 if [ $q_ssh = "y" ]; then
-	sbegin "Configuring ssh server"
+	snext "Setting up openssh"
+	slog "Configuring ssh server."
 	groupadd ssh
 	printf "HostKey /etc/ssh/ssh_host_ed25519_key\nAllowGroups ssh" > /etc/ssh/sshd_config
-	snext "generating ssh keys..."
+	slog "Generating ssh keys."
 	ssh-keygen -A
-	snext "starting open ssh service..."
+	slog "Starting open ssh service."
 	systemctl enable sshd.service
-	sdone
 fi
 if [ $q_reflector = "y" ]; then
-	sbegin "Configuring reflector"
+	snext "Setting up reflector"
+	slog "Configuring reflector."
 	tmp = `curl https://ipapi.co/country`
 	echo "-p https -c $tmp -l 5 --sort rate --save /etc/pacman.d/mirrorlist" > /etc/xdg/reflector/reflector.conf && break
-	snext "enabling reflector boot service"
+	slog "Enabling reflector boot service."
 	systemctl enable reflector.service
-	sdone
 fi
-slog "Root install complete, moving on to user config"
-#TODO user setup
+#User Setup
+if [user_count -gt 0]; then
+	for i in ${!user_names[@]}; do
+		snext "Setting up user: ${user_names[$i]}"
+		slog "Creating user."
+		useradd -m ${user_names[$i]}
+		slog "Setting user password."
+		echo ${user_passwords[$i]} | passwd -s ${user_names[$i]}
+		if [[ ${user_sudo[$i]} = "y" || ${user_sudo[$i]} = "Y" ]]; then
+			slog "Adding user to wheel group."
+			gpasswd -a ${user_names[$i]} wheel
+		fi
+		if [[ ${user_ssh[$i]} = "y" || ${user_ssh[$i]} = "Y" ]]; then
+			slog "Adding user to ssh group."
+			gpasswd -a ${user_names[$i]} ssh
+		fi
+		if [ $q_zsh = "y" ]; then
+			slog "Setting user shell to zsh."
+			usermod -s /bin/zsh ${user_names[$i]}
+		fi
+	done
+fi
+sdone
+printf "$font$green$1Arch installation complete. Reboot pc? (Y/n):$noformat "
+read qtmp
+if [[ $qtmp = "n" || $qtmp = "N" ]]; then
+	exit
+fi
+reboot
