@@ -27,31 +27,40 @@ sbegin () {
 sdone () {
 	slog "$font${teal}done.$noformat"
 }
+snext () {
+	sdone
+	sbegin $1
+}
 slog "Secondary script running, and utility functions setup."
 #initial setup stuffs
 sbegin "Setting up timezone"
 tmp=`curl https://ipapi.co/timezone`
 timedatectl set-timezone $tmp
 hwclock --systohc
-sdone
-sbegin "Generating locales"
+snext "Generating locales"
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "$q_hostname" > /etc/hostname
-sdone
-sbegin "Installing grub"
+snext "Installing grub"
 grub-install --target=x86_64-efi --efi-directory=/boot --removable
 grub-mkconfig -o /boot/grub/grub.cfg
-sdone
-sbegin "Setting wheel group as sudoers"
+snext "Setting wheel group as sudoers"
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-sdone
-sbegin "Enabling network manager service"
+snext "Enabling network manager service"
 systemctl enable NetworkManager.service
-sdone
-sbegin "Setting root password"
+snext "Setting root password"
 echo $q_root_password | passwd -s root
 sdone
 #TODO reflector and ssh
+if [ $q_ssh = "y" ]; then
+	sbegin "Configuring ssh server"
+	groupadd ssh
+	printf "HostKey /etc/ssh/ssh_host_ed25519_key\nAllowGroups ssh" > /etc/ssh/sshd_config
+	snext "generating ssh keys..."
+	ssh-keygen -A
+	snext "starting open ssh service..."
+	systemctl enable sshd.service
+	sdone
+fi
 slog "Root install complete, moving on to user config"
 #TODO user setup
