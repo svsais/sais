@@ -62,7 +62,7 @@ if [ $q_reflector = "y" ]; then
 	systemctl enable reflector.service
 fi
 #User Setup
-if [ user_count -gt 0 ]; then
+if [ $user_count -gt 0 ]; then
 	for i in ${!user_names[@]}; do
 		snext "Setting up user: ${user_names[$i]}"
 		slog "Creating user."
@@ -80,6 +80,14 @@ if [ user_count -gt 0 ]; then
 		if [ $q_zsh = "y" ]; then
 			slog "Setting user shell to zsh."
 			usermod -s /bin/zsh ${user_names[$i]}
+		fi
+		if [ $sdrive_count -gt 0 ]; then
+			#mkdir -p /home/${user_names[$i]}/drives
+			for j in ${!sdrive_ids[@]}; do
+				mkdir /drives/${sdrive_names[$j]}/${user_names[$i]}
+				chown ${user_names[$i]} /drives/${sdrive_names[$j]}/${user_names[$i]}
+				#TODO secondary drive symlink support
+			done
 		fi
 	done
 fi
