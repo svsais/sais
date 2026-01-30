@@ -270,9 +270,12 @@ vtrans () {
 vtrans "sdrive_count=$sdrive_count"
 tmp="sdrive_ids=("
 for d in ${sdrive_ids[@]}; do
-	tmp+="\\\"$d\\\" "
+	tmp+='"'
+	tmp+=$d
+	tmp+='" '
 done
 tmp+=")"
+slog $tmp
 vtrans $tmp
 tmp="sdrive_names=("
 for d in ${sdrive_names[@]}; do
