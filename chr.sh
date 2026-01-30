@@ -18,7 +18,7 @@ sdone () {
 }
 snext () {
 	sdone
-	sbegin $1
+	sbegin "$1"
 }
 slog "Secondary script running, and utility functions setup."
 #initial setup stuffs
@@ -84,6 +84,6 @@ if [user_count -gt 0]; then
 	done
 fi
 snext "Removing self"
-rm -rf /chr.sh
+#rm -rf /chr.sh
 sdone
 printf "$font$green$1Arch installation complete. You may now reboot!$noformat\n"
