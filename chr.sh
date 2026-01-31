@@ -57,7 +57,7 @@ if [ $q_reflector = "y" ]; then
 	snext "Setting up reflector"
 	slog "Configuring reflector."
 	tmp=`curl https://ipapi.co/country`
-	echo "-p https -c $tmp -l 5 --sort rate --save /etc/pacman.d/mirrorlist" > /etc/xdg/reflector/reflector.conf && break
+	echo "-p https -c $tmp -l 5 --sort rate --save /etc/pacman.d/mirrorlist" > /etc/xdg/reflector/reflector.conf
 	slog "Enabling reflector boot service."
 	systemctl enable reflector.service
 fi
