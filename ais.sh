@@ -1,4 +1,4 @@
-# Saki's Arch Installer v2.1.4 - Archiso Portion
+# Saki's Arch Installer v2.2.0 - Archiso Portion
 #todo ohmyzsh and zsh-completions and zsh-git-completions - possiblly add starship as option
 echo "---------------------------------------"
 echo "Welcome to Saki's Arch Installer v2.1.4"

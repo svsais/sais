@@ -1,3 +1,4 @@
+# Saki's Arch Installer v2.2.0 - ISO Generator
 scriptloc=$(dirname $0)
 cp -r /usr/share/archiso/configs/releng/ $scriptloc
 cp $scriptloc/ais.sh $scriptloc/releng/airootfs/install

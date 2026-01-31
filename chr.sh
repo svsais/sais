@@ -1,4 +1,4 @@
-# Saki's Arch Installer v2.1.4 - Chroot Portion
+# Saki's Arch Installer v2.2.0 - Chroot Portion
 #colours
 noformat="\033[0m"
 font="\033[38;5;"

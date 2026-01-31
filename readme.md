@@ -1,9 +1,43 @@
-# Saki's Arch Install Script
+# Saki's Arch Install Script v1.2.0
 #### Note this installer is for UEFI 64 bit systems, running an x86-64 architecture.
 ---
 
+# Creating a custom archiso on existing arch install (Premade ISOs can be found in the github releases)
 
-# Install Guide
+>CLone github and run iso builder
+```
+> git clone https://github.com/svsais/sais && chmod +x ./sais/build-iso.sh && sudo ./sais/build-iso.sh
+```
+
+# Installing from a custom iso
+
+>List internet devices (Skip if using ethernet)
+```
+> iwctl device list 
+```
+
+>If either the adapter or device are off: (Skip if using ethernet)
+```
+> iwctl device <name> set-property Powered on
+> iwctl adapter <adapter> set-property Powered on
+```
+
+>Connect to the internet (Skip if using ethernet)
+```
+> iwctl --passphrase <passphrase> station <name> connect <SSID>
+```
+
+>Make sure you have internet connection (if you are connected it should return constant pings, ctrl + c to exit)
+```
+> ping google.com
+```
+
+>Run installer
+```
+> /install
+```
+
+# No custom ISO guide
 
 >List internet devices (Skip if using ethernet)
 ```
