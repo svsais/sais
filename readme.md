@@ -4,7 +4,7 @@
 
 # Creating a custom archiso on existing arch install (Premade ISOs can be found in the github releases)
 
->CLone github and run iso builder
+>Clone github and run iso builder
 ```
 > git clone https://github.com/svsais/sais && chmod +x ./sais/build-iso.sh && sudo ./sais/build-iso.sh
 ```
