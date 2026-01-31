@@ -35,6 +35,8 @@ automated_script() {
             # note that script is executed when other services (like pacman-init) may be still in progress, please
             # synchronize to "systemctl is-system-running --wait" when your script depends on other services
             /tmp/startup_script
+            systemctl is-system-running --wait
+            #TODO add ais here
         fi
     fi
 }
