@@ -329,6 +329,7 @@ sdone
 #Move install to chroot
 sbegin "Removing self"
 rm -rf /ais.sh
+rm -rf /install
 sdone
 slog "Launching secondary script in arch-chroot."
 arch-chroot /mnt /chr.sh
